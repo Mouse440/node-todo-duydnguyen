@@ -10,8 +10,17 @@ angular.module('todoController', [])
 		// use the service to get all the todos
 		Todos.get()
 			.success(function(data) {
+				$scope.todoDone = 0;
+
+				for(var i = 0; i < data.length; i++) {
+					if(data[i].done) 
+						$scope.todoDone++;
+				}
+				
 				$scope.todos = data;
 				$scope.loading = false;
+
+
 			});
 
 		// CREATE ==================================================================
@@ -35,10 +44,42 @@ angular.module('todoController', [])
 			}
 		};
 
-		$scope.update = function(data,input) {
-			console.log(data,input);
+		$scope.update = function(data) {
+			if(data.done) 
+				$scope.todoDone++;
+			else
+				$scope.todoDone--;
+			// console.log(data);
 			Todos.update(data)
 				.success(function(res){
+					console.log(res);
+				});
+		}
+
+		// Delete todo item
+		$scope.delete = function(data) {
+			$scope.loading = true; 	//show loading
+
+			Todos.deleteTodo(data)
+				.success(function(res){
+					$scope.loading = false;	//turn off loading
+					if(res.deleted == false) {
+						alert(res);
+					} else {
+						$scope.todoDone--;
+						$scope.todos = res;
+					}
+				});
+		}
+
+		// Delete todo item
+		$scope.snooze = function(data) {
+			data.snooze = !data.snooze;
+			// $scope.loading = true; 	//show loading
+
+			Todos.update(data)
+				.success(function(res){
+					$scope.loading = false;	//turn off loading
 					console.log(res);
 				});
 		}

@@ -27,7 +27,8 @@ module.exports = function(app) {
 		// create a todo, information comes from AJAX request from Angular
 		Todo.create({
 			text : req.body.text,
-			done : false
+			done : false,
+			snooze: false,
 		}, function(err, todo) {
 			if (err)
 				res.send(err);
@@ -45,11 +46,29 @@ module.exports = function(app) {
 		Todo.findByIdAndUpdate(
 			req.body._id, {
 				text : req.body.text,
-				done : req.body.done
+				done : req.body.done,
+				snooze : req.body.snooze
 		}, function(err, todo) {
 			if (err)
 				res.send(err);
-			res.json({"success":true});
+			else 
+				res.json({"success":true});
+		});
+		
+	});
+
+	app.post('/api/delete', function(req, res) {
+		console.log(req.body);
+		// delete a todo element, information comes from AJAX request from Angular
+		Todo.remove( {
+			"_id" : req.body._id
+		}, function(err, todo) {
+			if (err) {
+				res.send(err);
+				res.json({"deleted":false});
+			} else {
+				getTodos(res);
+			}
 		});
 		
 	});
