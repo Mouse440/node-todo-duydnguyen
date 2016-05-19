@@ -35,4 +35,12 @@ angular.module('todoController', [])
 			}
 		};
 
+		$scope.update = function(data,input) {
+			console.log(data,input);
+			Todos.update(data)
+				.success(function(res){
+					console.log(res);
+				});
+		}
+
 	}]);

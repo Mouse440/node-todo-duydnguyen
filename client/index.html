@@ -42,7 +42,7 @@
 
 				<div class="checkbox"  ng-repeat="todo in todos">
                                   <label>
-                                  <input type="checkbox"> {{ todo.text }}
+                                  <input type="checkbox" ng-change="update(todo,this)" ng-model="todo.done" ng-model-options="{ debounce:10000 }"> {{ todo.text }}
                                   </label>
                                  </div>
                              

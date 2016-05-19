@@ -9,6 +9,9 @@ angular.module('todoService', [])
 			},
 			create : function(todoData) {
 				return $http.post('/api/todos', todoData);
+			},
+			update : function(data) {
+				return $http.post('/api/update', data);
 			}
 
 		}

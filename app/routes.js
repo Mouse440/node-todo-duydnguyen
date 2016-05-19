@@ -38,6 +38,22 @@ module.exports = function(app) {
 
 	});
 
+	// create todo and send back all todos after creation
+	app.post('/api/update', function(req, res) {
+		console.log(req.body);
+		// update the todo a todo, information comes from AJAX request from Angular
+		Todo.findByIdAndUpdate(
+			req.body._id, {
+				text : req.body.text,
+				done : req.body.done
+		}, function(err, todo) {
+			if (err)
+				res.send(err);
+			res.json({"success":true});
+		});
+		
+	});
+
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {
 		res.sendfile('./client/index.html'); // load the single view file (angular will handle the page changes on the front-end)
